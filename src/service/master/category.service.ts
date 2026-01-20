@@ -39,8 +39,8 @@ export const getAllCategories = async (query: any) => {
 
   return {
     data: data,
+    total: total,
     pagination: {
-      totalData: total,
       totalPages,
       currentPage: pageNum,
       limit: limitNum,
