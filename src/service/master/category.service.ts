@@ -38,7 +38,7 @@ export const getAllCategories = async (query: any) => {
   const totalPages = Math.ceil(total / limitNum);
 
   return {
-    data: data,
+    categories: data,
     total: total,
     pagination: {
       totalPages,

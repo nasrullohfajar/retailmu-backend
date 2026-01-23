@@ -57,7 +57,7 @@ describe('Category Service', () => {
       const query = { search: '', page: '1', limit: '10' };
       const result = await CategoryService.getAllCategories(query);
 
-      expect(result.data.length).toBe(2);
+      expect(result.categories.length).toBe(2);
       expect(result.total).toBe(2);
     });
 
@@ -69,9 +69,9 @@ describe('Category Service', () => {
       const query = { search: 'minuman', page: '1', limit: '10' };
       const result = await CategoryService.getAllCategories(query);
 
-      expect(result.data.length).toBe(1);
+      expect(result.categories.length).toBe(1);
       expect(result.total).toBe(1);
-      expect(result.data[0]?.name).toBe('Minuman');
+      expect(result.categories[0]?.name).toBe('Minuman');
     });
   });
 
