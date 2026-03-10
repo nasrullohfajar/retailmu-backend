@@ -3,6 +3,12 @@ import { ERROR_MESSAGES } from '../../utils/message';
 
 export const createCategorySchema = z.object({
   body: z.object({
+    code: z
+      .string()
+      .trim()
+      .min(2, ERROR_MESSAGES.MIN_LENGTH('Kode kategori', 2))
+      .max(10, ERROR_MESSAGES.MAX_LENGTH('Kode kategori', 10)),
+
     name: z
       .string()
       .trim()

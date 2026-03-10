@@ -2,6 +2,7 @@ import { Schema, model, Document } from 'mongoose';
 import { ERROR_MESSAGES } from '../../utils/message';
 
 export interface ICategory extends Document {
+  code: string;
   name: string;
   description?: string;
   createdAt: Date;
@@ -12,6 +13,15 @@ export interface ICategory extends Document {
 
 const CategorySchema = new Schema<ICategory>(
   {
+    code: {
+      type: String,
+      required: [true, ERROR_MESSAGES.REQUIRED('Kode kategori')],
+      unique: true,
+      trim: true,
+      minLength: [2, ERROR_MESSAGES.MIN_LENGTH('Kode kategori', 2)],
+      maxLength: [10, ERROR_MESSAGES.MIN_LENGTH('Kode kategori', 10)],
+    },
+
     name: {
       type: String,
       required: [true, ERROR_MESSAGES.REQUIRED('Nama kategori')],
