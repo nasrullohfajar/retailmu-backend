@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { errorHandler } from './middlewares/errorHandler';
 import categoryRoutes from './routes/master/category.route';
+import supplierRoutes from './routes/master/supplier.route';
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(
 app.use(express.json());
 
 app.use('/api/categories', categoryRoutes);
+app.use('/api/suppliers', supplierRoutes);
 
 app.use(errorHandler);
 
