@@ -6,6 +6,7 @@ export const createCategorySchema = z.object({
     code: z
       .string()
       .trim()
+      .uppercase()
       .min(2, ERROR_MESSAGES.MIN_LENGTH('Kode kategori', 2))
       .max(10, ERROR_MESSAGES.MAX_LENGTH('Kode kategori', 10)),
 
@@ -18,7 +19,7 @@ export const createCategorySchema = z.object({
     description: z
       .string()
       .trim()
-      .max(200, ERROR_MESSAGES.MAX_LENGTH('Nama kategori', 200))
+      .max(255, ERROR_MESSAGES.MAX_LENGTH('Deskripsi kategori', 255))
       .optional()
       .or(z.literal('')),
   }),

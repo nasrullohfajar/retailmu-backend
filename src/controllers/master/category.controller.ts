@@ -3,10 +3,6 @@ import * as categoryService from '../../service/master/category.service';
 import { successResponse } from '../../utils/successResponse';
 import { SUCCESS_MESSAGES } from '../../utils/message';
 
-interface IdParam {
-  id: string;
-}
-
 export const create = async (
   req: Request,
   res: Response,
@@ -80,7 +76,7 @@ export const update = async (
     return successResponse(
       res,
       200,
-      SUCCESS_MESSAGES.UPDATED('kategori'),
+      SUCCESS_MESSAGES.UPDATED('Kategori'),
       category
     );
   } catch (error) {

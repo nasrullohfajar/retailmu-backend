@@ -53,7 +53,7 @@ export const getById = async (
     return successResponse(
       res,
       200,
-      SUCCESS_MESSAGES.FETCHED('Storage'),
+      SUCCESS_MESSAGES.FETCHED('Penyimpanan'),
       storage
     );
   } catch (error) {

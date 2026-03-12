@@ -56,7 +56,7 @@ const SupplierSchema = new Schema<ISupplier>(
       required: [true, ERROR_MESSAGES.REQUIRED('Alamat supplier')],
       trim: true,
       minLength: [5, ERROR_MESSAGES.MIN_LENGTH('Alamat supplier', 5)],
-      maxLength: [256, ERROR_MESSAGES.MAX_LENGTH('Alamat supplier', 255)],
+      maxLength: [255, ERROR_MESSAGES.MAX_LENGTH('Alamat supplier', 255)],
     },
 
     isDeleted: {

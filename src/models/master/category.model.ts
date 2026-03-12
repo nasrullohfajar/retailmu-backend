@@ -17,9 +17,11 @@ const CategorySchema = new Schema<ICategory>(
       type: String,
       required: [true, ERROR_MESSAGES.REQUIRED('Kode kategori')],
       unique: true,
+      index: true,
       trim: true,
+      uppercase: true,
       minLength: [2, ERROR_MESSAGES.MIN_LENGTH('Kode kategori', 2)],
-      maxLength: [10, ERROR_MESSAGES.MIN_LENGTH('Kode kategori', 10)],
+      maxLength: [10, ERROR_MESSAGES.MAX_LENGTH('Kode kategori', 10)],
     },
 
     name: {
@@ -28,13 +30,13 @@ const CategorySchema = new Schema<ICategory>(
       unique: true,
       trim: true,
       minLength: [2, ERROR_MESSAGES.MIN_LENGTH('Nama kategori', 2)],
-      maxLength: [50, ERROR_MESSAGES.MIN_LENGTH('Nama kategori', 50)],
+      maxLength: [50, ERROR_MESSAGES.MAX_LENGTH('Nama kategori', 50)],
     },
 
     description: {
       type: String,
       trim: true,
-      maxLength: [200, ERROR_MESSAGES.MIN_LENGTH('Nama kategori', 200)],
+      maxLength: [255, ERROR_MESSAGES.MAX_LENGTH('Deskripsi kategori', 255)],
     },
 
     isDeleted: {

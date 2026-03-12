@@ -25,14 +25,14 @@ export const createSupplierSchema = z.object({
     phone: z
       .string()
       .trim()
-      .min(2, ERROR_MESSAGES.MIN_LENGTH('Telepon Supplier', 8))
-      .max(50, ERROR_MESSAGES.MAX_LENGTH('Telepon Supplier', 15)),
+      .min(8, ERROR_MESSAGES.MIN_LENGTH('Telepon Supplier', 8))
+      .max(15, ERROR_MESSAGES.MAX_LENGTH('Telepon Supplier', 15)),
 
     address: z
       .string()
       .trim()
-      .min(2, ERROR_MESSAGES.MIN_LENGTH('Alamat Supplier', 5))
-      .max(50, ERROR_MESSAGES.MAX_LENGTH('Alamat Supplier', 255)),
+      .min(5, ERROR_MESSAGES.MIN_LENGTH('Alamat Supplier', 5))
+      .max(255, ERROR_MESSAGES.MAX_LENGTH('Alamat Supplier', 255)),
   }),
 });
 
