@@ -23,8 +23,11 @@ export const getAllSupplier = async (query: any) => {
 
   const filter: any = { isDeleted: false };
   if (search) {
-    filter.code = { $regex: search, $options: 'i' };
-    filter.name = { $regex: search, $options: 'i' };
+    filter.$or = [
+      { code: { $regex: search, $options: 'i' } },
+      { name: { $regex: search, $options: 'i' } },
+      { pic: { $regex: search, $options: 'i' } },
+    ];
   }
 
   const [data, total] = await Promise.all([
