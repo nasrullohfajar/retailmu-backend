@@ -5,6 +5,7 @@ import categoryRoutes from './routes/master/category.route';
 import supplierRoutes from './routes/master/supplier.route';
 import storageRoutes from './routes/master/storage.route';
 import userRoutes from './routes/master/user.route';
+import authRoutes from './routes/master/auth.route';
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/storages', storageRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
 
 app.use(errorHandler);
 

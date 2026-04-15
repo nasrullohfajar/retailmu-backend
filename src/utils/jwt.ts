@@ -27,7 +27,7 @@ export const generateCookie = (
     sameSite: 'lax' as const,
   };
 
-  res.cookie('jwt', token, cookie);
+  res.cookie('token', token, cookie);
   user.password = undefined as unknown as string;
 
   res.status(statusCode).json({
