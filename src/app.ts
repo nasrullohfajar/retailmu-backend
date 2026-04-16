@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { errorHandler } from './middlewares/errorHandler';
 import categoryRoutes from './routes/master/category.route';
 import supplierRoutes from './routes/master/supplier.route';
@@ -25,6 +26,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/api/categories', categoryRoutes);
 app.use('/api/suppliers', supplierRoutes);
