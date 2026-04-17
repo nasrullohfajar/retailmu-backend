@@ -97,3 +97,17 @@ export const remove = async (
     next(error);
   }
 };
+
+export const me = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = req.user;
+    return successResponse(
+      res,
+      200,
+      SUCCESS_MESSAGES.FETCHED('Pengguna'),
+      user
+    );
+  } catch (error) {
+    next(error);
+  }
+};
