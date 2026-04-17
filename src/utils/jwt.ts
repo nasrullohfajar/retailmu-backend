@@ -1,6 +1,7 @@
 import type { IUser } from '../models/master/user.model';
 import jwt, { Secret } from 'jsonwebtoken';
 import { Response } from 'express';
+import { successResponse } from './successResponse';
 
 export const generateToken = (id: string): string => {
   const secret = process.env.JWT_SECRET;
@@ -30,9 +31,5 @@ export const generateCookie = (
   res.cookie('token', token, cookie);
   user.password = undefined as unknown as string;
 
-  res.status(statusCode).json({
-    success: true,
-    message: 'Login berhasil',
-    data: { user },
-  });
+  successResponse(res, 200, 'Login berhasil', user);
 };
