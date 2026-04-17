@@ -18,9 +18,6 @@ export const protect = async (
   next: NextFunction
 ) => {
   try {
-    console.log('cookies:', req.cookies);
-    console.log('token:', req.cookies?.jwt);
-
     const token = req.cookies?.token;
 
     if (!token) {
