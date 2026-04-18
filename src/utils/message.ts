@@ -6,6 +6,10 @@ export const ERROR_MESSAGES = {
   MAX_LENGTH: (field: string, max: number) =>
     `${field} minimal ${max} karakter`,
   INVALID: (field: string) => `${field} tidak sesuai`,
+  MIN_NUMBER: (field: string, min: number) =>
+    `${field} minimal bernilai ${min}`,
+  MAX_NUMBER: (field: string, max: number) =>
+    `${field} tidak boleh melebihi ${max}`,
 };
 
 export const SUCCESS_MESSAGES = {
