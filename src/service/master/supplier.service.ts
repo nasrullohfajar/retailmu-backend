@@ -1,11 +1,40 @@
 import Supplier, { ISupplier } from '../../models/master/supplier.model';
 import { ApiError } from '../../utils/apiError';
 import { ERROR_MESSAGES } from '../../utils/message';
+import { Types } from 'mongoose';
 
 export const createSupplier = async (
-  supplierData: Partial<ISupplier>
+  supplierData: Partial<ISupplier>,
+  userId: Types.ObjectId
 ): Promise<ISupplier> => {
-  return await Supplier.create(supplierData);
+  // cek apakah data sudah ada tapi terhapus
+  const deletedSupplier = await Supplier.findOne({
+    code: supplierData.code,
+    isDeleted: true,
+  });
+
+  // jika ada, restore data tersebut
+  if (deletedSupplier) {
+    const restored = await Supplier.findByIdAndUpdate(
+      deletedSupplier._id,
+      {
+        ...supplierData,
+        isDeleted: false,
+        deletedAt: null,
+        deletedBy: null,
+        updatedBy: userId,
+      },
+      { new: true }
+    );
+
+    if (!restored) {
+      throw new ApiError(500, 'Gagal mengembalikan supplier');
+    }
+
+    return restored;
+  }
+
+  return await Supplier.create({ ...supplierData, createdBy: userId });
 };
 
 export const getAllSupplier = async (query: any) => {
@@ -32,6 +61,7 @@ export const getAllSupplier = async (query: any) => {
 
   const [data, total] = await Promise.all([
     Supplier.find(filter)
+      .populate('createdBy updatedBy deletedBy', 'name')
       .sort({ [sortBy]: order === 'desc' ? -1 : 1 })
       .skip(skip)
       .limit(limitNum),
@@ -55,7 +85,11 @@ export const getAllSupplier = async (query: any) => {
 };
 
 export const getSupplierById = async (id: string) => {
-  const supplier = await Supplier.findOne({ _id: id, isDeleted: false });
+  const supplier = await Supplier.findOne({
+    _id: id,
+    isDeleted: false,
+  }).populate('createdBy updatedBy deletedBy', 'name');
+
   if (!supplier) {
     throw new ApiError(404, ERROR_MESSAGES.NOTFOUND('Supplier'));
   }
@@ -65,11 +99,12 @@ export const getSupplierById = async (id: string) => {
 
 export const updateSupplier = async (
   id: string,
-  updateData: Partial<ISupplier>
+  updateData: Partial<ISupplier>,
+  userId: Types.ObjectId
 ) => {
   const supplier = await Supplier.findOneAndUpdate(
     { _id: id, isDeleted: false },
-    updateData,
+    { ...updateData, updatedBy: userId },
     { new: true, runValidators: true }
   );
 
@@ -80,10 +115,10 @@ export const updateSupplier = async (
   return supplier;
 };
 
-export const deleteSupplier = async (id: string) => {
+export const deleteSupplier = async (id: string, userId: Types.ObjectId) => {
   const supplier = await Supplier.findOneAndUpdate(
     { _id: id, isDeleted: false },
-    { isDeleted: true, deletedAt: new Date() },
+    { isDeleted: true, deletedAt: new Date(), deletedBy: userId },
     { new: true }
   );
 

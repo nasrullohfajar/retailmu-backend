@@ -9,7 +9,10 @@ export const create = async (
   next: NextFunction
 ) => {
   try {
-    const supplier = await supplierService.createSupplier(req.body);
+    const supplier = await supplierService.createSupplier(
+      req.body,
+      req.user._id
+    );
 
     return successResponse(
       res,
@@ -70,7 +73,8 @@ export const update = async (
     const { id } = req.params;
     const supplier = await supplierService.updateSupplier(
       id as string,
-      req.body
+      req.body,
+      req.user._id
     );
 
     return successResponse(
@@ -91,7 +95,7 @@ export const remove = async (
 ) => {
   try {
     const { id } = req.params;
-    await supplierService.deleteSupplier(id as string);
+    await supplierService.deleteSupplier(id as string, req.user._id);
 
     return successResponse(res, 200, SUCCESS_MESSAGES.DELETED('Supplier'));
   } catch (error) {

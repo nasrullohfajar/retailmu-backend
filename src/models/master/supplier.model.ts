@@ -1,16 +1,14 @@
 import { Schema, model, Document } from 'mongoose';
 import { ERROR_MESSAGES } from '../../utils/message';
+import { IAudit } from '../types';
+import { auditSchemaFields } from '../auditSchemaFields';
 
-export interface ISupplier extends Document {
+export interface ISupplier extends Document, IAudit {
   code: string;
   name: string;
   pic: string;
   phone: string;
   address: string;
-  createdAt: Date;
-  updatedAt: Date;
-  isDeleted: boolean;
-  deletedAt: Date;
 }
 
 const SupplierSchema = new Schema<ISupplier>(
@@ -59,15 +57,7 @@ const SupplierSchema = new Schema<ISupplier>(
       maxLength: [255, ERROR_MESSAGES.MAX_LENGTH('Alamat supplier', 255)],
     },
 
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
-
-    deletedAt: {
-      type: Date,
-      default: null,
-    },
+    ...auditSchemaFields,
   },
   { timestamps: true }
 );
