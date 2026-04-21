@@ -6,7 +6,7 @@ export const createCategorySchema = z.object({
     code: z
       .string()
       .trim()
-      .uppercase()
+      .uppercase({ error: ERROR_MESSAGES.UPPERCASE('Kode produk') })
       .min(2, ERROR_MESSAGES.MIN_LENGTH('Kode kategori', 2))
       .max(10, ERROR_MESSAGES.MAX_LENGTH('Kode kategori', 10)),
 
