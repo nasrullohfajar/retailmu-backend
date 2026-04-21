@@ -103,7 +103,7 @@ export const updateCategory = async (
 ) => {
   const category = await Category.findOneAndUpdate(
     { _id: id, isDeleted: false },
-    { ...updateData, userId },
+    { ...updateData, updatedBy: userId },
     { new: true, runValidators: true }
   );
 
@@ -117,7 +117,7 @@ export const updateCategory = async (
 export const deleteCategory = async (id: string, userId: Types.ObjectId) => {
   const category = await Category.findOneAndUpdate(
     { _id: id, isDeleted: false },
-    { isDeleted: true, deletedAt: new Date(), userId },
+    { isDeleted: true, deletedAt: new Date(), deletedBy: userId },
     { new: true }
   );
 
