@@ -1,14 +1,12 @@
 import { Schema, model, Document } from 'mongoose';
 import { ERROR_MESSAGES } from '../../utils/message';
+import { IAudit } from '../types';
+import { auditSchemaFields } from '../auditSchemaFields';
 
-export interface ICategory extends Document {
+export interface ICategory extends Document, IAudit {
   code: string;
   name: string;
   description?: string;
-  createdAt: Date;
-  updatedAt: Date;
-  isDeleted: boolean;
-  deletedAt: Date;
 }
 
 const CategorySchema = new Schema<ICategory>(
@@ -39,15 +37,7 @@ const CategorySchema = new Schema<ICategory>(
       maxLength: [255, ERROR_MESSAGES.MAX_LENGTH('Deskripsi kategori', 255)],
     },
 
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
-
-    deletedAt: {
-      type: Date,
-      default: null,
-    },
+    ...auditSchemaFields,
   },
   { timestamps: true }
 );

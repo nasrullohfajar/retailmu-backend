@@ -1,11 +1,40 @@
+import { Types } from 'mongoose';
 import Category, { ICategory } from '../../models/master/category.model';
 import { ApiError } from '../../utils/apiError';
 import { ERROR_MESSAGES } from '../../utils/message';
 
 export const createCategory = async (
-  categoryData: Partial<ICategory>
+  categoryData: Partial<ICategory>,
+  userId: Types.ObjectId
 ): Promise<ICategory> => {
-  return await Category.create(categoryData);
+  // cek apakah data sudah ada tapi terhapus
+  const deletedCategory = await Category.findOne({
+    code: categoryData.code,
+    isDeleted: true,
+  });
+
+  // jika ada, restore data tersebut
+  if (deletedCategory) {
+    const restored = await Category.findByIdAndUpdate(
+      deletedCategory._id,
+      {
+        ...categoryData,
+        isDeleted: false,
+        deletedAt: null,
+        deletedBy: null,
+        updatedBy: userId,
+      },
+      { new: true }
+    );
+
+    if (!restored) {
+      throw new ApiError(500, 'Gagal mengembalikan kategori');
+    }
+
+    return restored;
+  }
+
+  return await Category.create({ ...categoryData, createdBy: userId });
 };
 
 export const getAllCategories = async (query: any) => {
@@ -31,6 +60,7 @@ export const getAllCategories = async (query: any) => {
 
   const [data, total] = await Promise.all([
     Category.find(filter)
+      .populate('createdBy updatedBy deletedBy', 'name')
       .sort({ [sortBy]: order === 'desc' ? -1 : 1 })
       .skip(skip)
       .limit(limitNum),
@@ -54,7 +84,11 @@ export const getAllCategories = async (query: any) => {
 };
 
 export const getCategoryById = async (id: string) => {
-  const category = await Category.findOne({ _id: id, isDeleted: false });
+  const category = await Category.findOne({
+    _id: id,
+    isDeleted: false,
+  }).populate('createdBy updatedBy deletedBy', 'name');
+
   if (!category) {
     throw new ApiError(404, ERROR_MESSAGES.NOTFOUND('Kategori'));
   }
@@ -64,11 +98,12 @@ export const getCategoryById = async (id: string) => {
 
 export const updateCategory = async (
   id: string,
-  updateData: Partial<ICategory>
+  updateData: Partial<ICategory>,
+  userId: Types.ObjectId
 ) => {
   const category = await Category.findOneAndUpdate(
     { _id: id, isDeleted: false },
-    updateData,
+    { ...updateData, userId },
     { new: true, runValidators: true }
   );
 
@@ -79,10 +114,10 @@ export const updateCategory = async (
   return category;
 };
 
-export const deleteCategory = async (id: string) => {
+export const deleteCategory = async (id: string, userId: Types.ObjectId) => {
   const category = await Category.findOneAndUpdate(
     { _id: id, isDeleted: false },
-    { isDeleted: true, deletedAt: new Date() },
+    { isDeleted: true, deletedAt: new Date(), userId },
     { new: true }
   );
 
