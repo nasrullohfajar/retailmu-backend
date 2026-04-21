@@ -8,10 +8,34 @@ export const createProduct = async (
   productData: Partial<IProduct>,
   userId: Types.ObjectId
 ): Promise<IProduct> => {
-  return await Product.create({
-    ...productData,
-    createdBy: userId,
+  // cek apakah data sudah ada tapi terhapus
+  const deletedProduct = await Product.findOne({
+    code: productData.code,
+    isDeleted: true,
   });
+
+  // jika ada, restore data tersebut
+  if (deletedProduct) {
+    const restored = await Product.findByIdAndUpdate(
+      deletedProduct._id,
+      {
+        ...productData,
+        isDeleted: false,
+        deletedAt: null,
+        deletedBy: null,
+        updatedBy: userId,
+      },
+      { new: true }
+    );
+
+    if (!restored) {
+      throw new ApiError(500, 'Gagal mengembalikan produk');
+    }
+
+    return restored;
+  }
+
+  return await Product.create({ ...productData, createdBy: userId });
 };
 
 export const getAllProduct = async (query: IQuery) => {
