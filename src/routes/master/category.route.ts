@@ -1,7 +1,10 @@
 import { Router } from 'express';
 import * as categoryController from '../../controllers/master/category.controller';
 import { validate } from '../../middlewares/validate';
-import { createCategorySchema } from '../../validations/master/category.validation';
+import {
+  createCategorySchema,
+  updateCategorySchema,
+} from '../../validations/master/category.validation';
 import { protect } from '../../middlewares/auth.middleware';
 import { restrictTo } from '../../middlewares/role.middleware';
 
@@ -19,7 +22,7 @@ router.put(
   '/:id',
   protect,
   restrictTo('administrator'),
-  validate(createCategorySchema),
+  validate(updateCategorySchema),
   categoryController.update
 );
 
