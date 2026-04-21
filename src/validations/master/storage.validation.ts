@@ -6,14 +6,14 @@ export const createStorageSchema = z.object({
     code: z
       .string()
       .trim()
-      .uppercase()
-      .min(2, ERROR_MESSAGES.MIN_LENGTH('Kode Penyimpanan', 2))
-      .max(10, ERROR_MESSAGES.MAX_LENGTH('Kode Penyimpanan', 10)),
+      .uppercase({ error: ERROR_MESSAGES.UPPERCASE('Kode penyimpanan') })
+      .min(2, ERROR_MESSAGES.MIN_LENGTH('Kode penyimpanan', 2))
+      .max(10, ERROR_MESSAGES.MAX_LENGTH('Kode penyimpanan', 10)),
 
     description: z
       .string()
       .trim()
-      .max(255, ERROR_MESSAGES.MAX_LENGTH('Deskripsi Penyimpanan', 255))
+      .max(255, ERROR_MESSAGES.MAX_LENGTH('Deskripsi penyimpanan', 255))
       .optional()
       .or(z.literal('')),
   }),
