@@ -6,7 +6,7 @@ export const createSupplierSchema = z.object({
     code: z
       .string()
       .trim()
-      .uppercase()
+      .uppercase({ error: ERROR_MESSAGES.UPPERCASE('Kode supplier') })
       .min(2, ERROR_MESSAGES.MIN_LENGTH('Kode Supplier', 2))
       .max(10, ERROR_MESSAGES.MAX_LENGTH('Kode Supplier', 10)),
 
@@ -36,4 +36,9 @@ export const createSupplierSchema = z.object({
   }),
 });
 
+export const updateSupplierSchema = z.object({
+  body: createSupplierSchema.shape.body.partial(),
+});
+
 export type CreateSupplierInput = z.infer<typeof createSupplierSchema>['body'];
+export type UpdateSupplierInput = z.infer<typeof updateSupplierSchema>['body'];
