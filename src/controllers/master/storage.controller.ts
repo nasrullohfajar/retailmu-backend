@@ -9,7 +9,7 @@ export const create = async (
   next: NextFunction
 ) => {
   try {
-    const storage = await storageService.createStorage(req.body);
+    const storage = await storageService.createStorage(req.body, req.user._id);
 
     return successResponse(
       res,
@@ -68,7 +68,11 @@ export const update = async (
 ) => {
   try {
     const { id } = req.params;
-    const storage = await storageService.updateStorage(id as string, req.body);
+    const storage = await storageService.updateStorage(
+      id as string,
+      req.body,
+      req.user._id
+    );
 
     return successResponse(
       res,
@@ -88,7 +92,7 @@ export const remove = async (
 ) => {
   try {
     const { id } = req.params;
-    await storageService.deleteStorage(id as string);
+    await storageService.deleteStorage(id as string, req.user._id);
 
     return successResponse(res, 200, SUCCESS_MESSAGES.DELETED('Penyimpanan'));
   } catch (error) {

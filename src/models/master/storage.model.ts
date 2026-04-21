@@ -1,13 +1,11 @@
 import { Schema, model, Document } from 'mongoose';
 import { ERROR_MESSAGES } from '../../utils/message';
+import { IAudit } from '../types';
+import { auditSchemaFields } from '../auditSchemaFields';
 
-export interface IStorage extends Document {
+export interface IStorage extends Document, IAudit {
   code: string;
   description: string;
-  createdAt: Date;
-  updatedAt: Date;
-  isDeleted: boolean;
-  deletedAt: Date;
 }
 
 const StorageSchema = new Schema<IStorage>(
@@ -29,15 +27,7 @@ const StorageSchema = new Schema<IStorage>(
       maxlength: [255, ERROR_MESSAGES.MAX_LENGTH('Deskripsi penyimpanan', 255)],
     },
 
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
-
-    deletedAt: {
-      type: Date,
-      default: null,
-    },
+    ...auditSchemaFields,
   },
   { timestamps: true }
 );
