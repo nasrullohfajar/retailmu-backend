@@ -9,7 +9,10 @@ export const create = async (
   next: NextFunction
 ) => {
   try {
-    const category = await categoryService.createCategory(req.body);
+    const category = await categoryService.createCategory(
+      req.body,
+      req.user._id
+    );
 
     return successResponse(
       res,
@@ -70,7 +73,8 @@ export const update = async (
     const { id } = req.params;
     const category = await categoryService.updateCategory(
       id as string,
-      req.body
+      req.body,
+      req.user._id
     );
 
     return successResponse(
@@ -91,7 +95,7 @@ export const remove = async (
 ) => {
   try {
     const { id } = req.params;
-    await categoryService.deleteCategory(id as string);
+    await categoryService.deleteCategory(id as string, req.user._id);
     return successResponse(res, 200, SUCCESS_MESSAGES.DELETED('Kategori'));
   } catch (error) {
     next(error);
