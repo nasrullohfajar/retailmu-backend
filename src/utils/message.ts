@@ -1,5 +1,5 @@
 export const ERROR_MESSAGES = {
-  REQUIRED: (field: string) => `${field} wajib diisi`,
+  REQUIRED: (field: string) => `${field} harus diisi`,
   NOTFOUND: (field: string) => `${field} tidak ditemukan`,
   MIN_LENGTH: (field: string, min: number) =>
     `${field} minimal ${min} karakter`,
@@ -10,6 +10,7 @@ export const ERROR_MESSAGES = {
     `${field} minimal bernilai ${min}`,
   MAX_NUMBER: (field: string, max: number) =>
     `${field} tidak boleh melebihi ${max}`,
+  UPPERCASE: (field: string) => `${field} harus huruf kapital`,
 };
 
 export const SUCCESS_MESSAGES = {
