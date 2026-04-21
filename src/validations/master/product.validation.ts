@@ -6,6 +6,7 @@ export const createProductSchema = z.object({
     code: z
       .string({ error: ERROR_MESSAGES.REQUIRED('Kode produk') })
       .trim()
+      .uppercase({ error: ERROR_MESSAGES.UPPERCASE('Kode produk') })
       .min(2, ERROR_MESSAGES.MIN_LENGTH('Kode produk', 2))
       .max(10, ERROR_MESSAGES.MAX_LENGTH('Kode produk', 10)),
 
